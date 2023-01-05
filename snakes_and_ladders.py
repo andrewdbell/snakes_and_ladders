@@ -68,20 +68,27 @@ def play_game():
             draw_grid(screen, grid_positions, snakes_and_ladders, player_positions)
             pygame.draw.rect(screen, white, pygame.Rect(520, 10, 180, 490))
             font = pygame.font.Font("seguisym.ttf", 20)
-            text_image = font.render(str("its " + player_colour_names[current_player] + "'s turn"), True, player_colours[current_player])
-            text_rect = text_image.get_rect(center=(610, 255))
-            screen.blit(text_image, text_rect)
-            button = pygame.draw.rect(screen, player_colours[current_player], pygame.Rect(560, 295, 100, 40))
-            button_text = font.render(str("roll"), True, black)
-            screen.blit(button_text, button_text.get_rect(center=button.center))
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                dice_roll = random.randint(1, 6)
-                player_positions[current_player] += dice_roll
-                if player_positions[current_player] > 100:
-                    player_positions[current_player] = 100
-                current_player += 1
-                if current_player >= len(player_positions):
-                    current_player = 0
+            if player_positions[current_player] >= 100:
+                text_image = font.render(str(player_colour_names[current_player] + " has won"), True,
+                                         player_colours[current_player])
+                text_rect = text_image.get_rect(center=(610, 255))
+                screen.blit(text_image, text_rect)
+            else:
+                text_image = font.render(str("its " + player_colour_names[current_player] + "'s turn"), True, player_colours[current_player])
+                text_rect = text_image.get_rect(center=(610, 255))
+                screen.blit(text_image, text_rect)
+                button = pygame.draw.rect(screen, player_colours[current_player], pygame.Rect(560, 295, 100, 40))
+                button_text = font.render(str("roll"), True, black)
+                screen.blit(button_text, button_text.get_rect(center=button.center))
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    dice_roll = random.randint(1, 6)
+                    player_positions[current_player] += dice_roll
+                    if player_positions[current_player] >= 100:
+                        player_positions[current_player] = 100
+                    else:
+                        current_player += 1
+                    if current_player >= len(player_positions):
+                        current_player = 0
             if event.type == pygame.QUIT:
                 return
             pygame.display.update()
